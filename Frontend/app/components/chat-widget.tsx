@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import { useChat } from "@ai-sdk/react"
-import { MessageCircle, X, Send, Fish, Loader2 } from "lucide-react"
+import { MessageCircle, X, Send, Loader2 } from "lucide-react"
 import { Button } from "./ui/button"
 
 const SUGGESTIONS = [
@@ -50,12 +51,18 @@ export function ChatWidget() {
         <div className="fixed bottom-24 right-5 z-50 flex h-[70vh] max-h-[560px] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
           {/* Header */}
           <header className="flex items-center gap-3 bg-primary px-4 py-3 text-primary-foreground">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-foreground/15">
-              <Fish className="h-5 w-5" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-background p-1">
+              <Image
+                src="/images/kanan-logo.png"
+                alt="Kanan Biotech Pvt. Ltd. logo"
+                width={32}
+                height={32}
+                className="h-full w-full object-contain"
+              />
             </div>
             <div className="flex flex-col leading-tight">
               <span className="text-sm font-semibold">AquaBot Assistant</span>
-              <span className="text-xs text-primary-foreground/80">Kanan Biotech · Aquaculture help</span>
+              <span className="text-xs text-primary-foreground/80">KBTech Pvt. Ltd. · Aquaculture help</span>
             </div>
           </header>
 
