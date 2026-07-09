@@ -1,13 +1,17 @@
 import Link from "next/link"
 import { Button } from "../components/ui/button"
-import { ArrowRight, Phone } from "lucide-react"
+import { Phone } from "lucide-react"
+import { Reveal } from "./reveal"
 
 export function CTASection() {
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="hero-gradient rounded-3xl p-8 md:p-16 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">Ready to Transform Your Fish Farm?</h2>
+        <Reveal className="hero-gradient relative overflow-hidden rounded-3xl p-8 md:p-16 text-center text-white">
+          <div className="pointer-events-none absolute -top-16 -right-16 h-64 w-64 rounded-full bg-white/10 blur-3xl animate-float" />
+          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-balance">
+            Ready to Transform Your Fish Farm?
+          </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
             Join thousands of successful fish farmers who trust Kanan Biotech for their aquaculture needs. Get expert
             guidance and premium products.
@@ -26,7 +30,7 @@ export function CTASection() {
               </Button>
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

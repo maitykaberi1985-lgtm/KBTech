@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Fish, Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Youtube } from "lucide-react"
+import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin } from "lucide-react"
 
 export function Footer() {
   return (
@@ -7,13 +7,19 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <Fish className="w-6 h-6 text-primary-foreground" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background p-1">
+                <img
+                  src="/kanan-biotech-logo.png"
+                  alt="Kanan Biotech Pvt. Ltd. logo"
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg leading-tight">Kanan Biotech</span>
-                <span className="text-xs text-muted-foreground">Pvt. Ltd</span>
+                <span className="font-heading font-bold text-lg leading-tight">
+                  KBTech
+                </span>
+                <span className="text-xs text-muted-foreground">Kanan Biotech Pvt. Ltd.</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { Menu, X, Fish, ChevronDown, User, History, CircleUserRound } from "lucide-react"
+import { Menu, X, ChevronDown, User, History, CircleUserRound } from "lucide-react"
 import { Button } from "./ui/button"
 import { useAuth } from "../context/AuthContext"
 import {
@@ -42,13 +42,17 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Fish className="w-6 h-6 text-primary-foreground" />
-            </div>
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <img
+              src="/kanan-biotech-logo.png"
+              alt="Kanan Biotech Pvt. Ltd. logo"
+              className="h-11 w-11 object-contain transition-transform duration-300 group-hover:scale-110"
+            />
             <div className="flex flex-col">
-              <span className="font-bold text-foreground text-lg leading-tight">Kanan Biotech</span>
-              <span className="text-xs text-muted-foreground">Pvt. Ltd</span>
+              <span className="font-heading font-bold text-foreground text-lg leading-tight">
+                KB<span className="text-primary">Tech</span>
+              </span>
+              <span className="text-[11px] text-muted-foreground leading-tight">Kanan Biotech Pvt. Ltd.</span>
             </div>
           </Link>
 

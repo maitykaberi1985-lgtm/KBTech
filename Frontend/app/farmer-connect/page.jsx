@@ -157,16 +157,61 @@ export default function FarmerConnectPage() {
     <main className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="pt-24 pb-12 hero-gradient text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Users className="w-8 h-8" />
-            <h1 className="text-4xl md:text-5xl font-bold">Farmer Connect</h1>
+      <div className="relative overflow-hidden pt-24 pb-14 hero-gradient text-white">
+        <div className="pointer-events-none absolute -top-16 -right-10 h-72 w-72 rounded-full bg-white/10 blur-3xl animate-float" />
+        <div className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-secondary/20 blur-3xl animate-float-slow" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 mb-5 animate-fade-up">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+            <span className="text-sm font-medium">Buy &amp; sell directly, farmer to farmer</span>
           </div>
-          <p className="text-white/80 max-w-2xl">
-            Connect with buyers and sellers, find consultation services, and grow your aquaculture business with our
-            farmer community.
+          <div className="flex items-center gap-3 mb-4 animate-fade-up delay-100">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15">
+              <Users className="w-7 h-7" />
+            </div>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold">Farmer Connect</h1>
+          </div>
+          <p className="text-white/85 max-w-2xl animate-fade-up delay-200">
+            Connect with verified buyers and sellers, list your catch, and book expert consultations — all in one
+            trusted community built to grow your aquaculture business.
           </p>
+
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl animate-fade-up delay-300">
+            {[
+              { value: "10,000+", label: "Active Farmers" },
+              { value: "₹50Cr+", label: "Trade Volume" },
+              { value: "28", label: "States" },
+              { value: "4.8★", label: "Avg. Rating" },
+            ].map((stat) => (
+              <div key={stat.label} className="rounded-2xl bg-white/10 px-4 py-3 backdrop-blur">
+                <div className="font-heading text-xl font-bold">{stat.value}</div>
+                <div className="text-xs text-white/75">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* How it works */}
+      <div className="border-b border-border bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid gap-6 sm:grid-cols-3">
+            {[
+              { step: "1", title: "Post or Browse", desc: "List fish to sell or find what you want to buy." },
+              { step: "2", title: "Connect Directly", desc: "Message verified farmers and negotiate the best price." },
+              { step: "3", title: "Trade with Trust", desc: "Deal with rated, verified members across India." },
+            ].map((s) => (
+              <div key={s.step} className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-heading font-bold">
+                  {s.step}
+                </div>
+                <div>
+                  <div className="font-heading font-semibold text-foreground">{s.title}</div>
+                  <p className="text-sm text-muted-foreground">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -218,8 +263,12 @@ export default function FarmerConnectPage() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredListings.map((listing) => (
-                <Card key={listing.id} className="border-0 shadow-md card-hover">
+              {filteredListings.map((listing, i) => (
+                <Card
+                  key={listing.id}
+                  className="border border-border/60 shadow-md card-hover animate-fade-up"
+                  style={{ animationDelay: `${i * 70}ms` }}
+                >
                   <CardHeader className="pb-2">
                     <div className="flex items-start justify-between">
                       <div>
@@ -500,9 +549,9 @@ export default function FarmerConnectPage() {
                         <div>
                           <div className="font-medium">Office Address</div>
                           <div className="text-sm text-muted-foreground">
-                            123 Aqua Business Park
+                            Debra, Kharagpur, Paschim Midnapore
                             <br />
-                            Chennai, Tamil Nadu 600001
+                            West Bengal, Pin-721126
                           </div>
                         </div>
                       </div>
@@ -526,7 +575,7 @@ export default function FarmerConnectPage() {
                         <div>
                           <div className="font-medium">Email</div>
                           <div className="text-sm text-muted-foreground">
-                            info@kananbiotech.com
+                            kananbiotech@gmail.com
                             <br />
                             support@kananbiotech.com
                           </div>

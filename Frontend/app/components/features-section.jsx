@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Card, CardContent } from "../components/ui/card"
-import { Calculator, Cloud, Users, Package, Pill, BarChart3 } from "lucide-react"
+import { Calculator, Users, Pill, BarChart3, ArrowRight } from "lucide-react"
+import { Reveal } from "./reveal"
 
 const features = [
   {
@@ -51,28 +52,39 @@ export function FeaturesSection() {
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+        <Reveal className="text-center mb-12">
+          <span className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
+            What we offer
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
             Everything You Need for Successful Aquaculture
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Comprehensive tools and resources to help you manage your fish farm efficiently and profitably.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <Link key={index} href={feature.href}>
-              <Card className="card-hover h-full border-0 shadow-md hover:shadow-xl cursor-pointer">
-                <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-4`}>
-                    <feature.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
-            </Link>
+            <Reveal key={index} delay={index * 90}>
+              <Link href={feature.href} className="block h-full">
+                <Card className="card-hover group h-full border border-border/60 shadow-md hover:shadow-xl cursor-pointer">
+                  <CardContent className="p-6">
+                    <div
+                      className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110`}
+                    >
+                      <feature.icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                      Learn more
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>

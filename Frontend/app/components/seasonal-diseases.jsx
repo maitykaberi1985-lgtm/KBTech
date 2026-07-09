@@ -1,17 +1,18 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
 import { Button } from "../components/ui/button"
-import { Snowflake, Sun, AlertTriangle, ArrowRight } from "lucide-react"
+import { Snowflake, Sun, AlertTriangle, ArrowRight, Shuffle, Leaf } from "lucide-react"
 
 const winterDiseases = [
   {
     name: "Saprolegniasis (Winter Fungus)",
     description: "Fungal infection causing cotton-like growth on fish skin and gills.",
     severity: "High",
+    season: "Winter",
     symptoms: ["White cotton-like patches", "Lethargy", "Loss of appetite"],
     prevention: "Maintain water quality, avoid overcrowding",
     product: "AquaGuard Anti-Fungal",
@@ -20,6 +21,7 @@ const winterDiseases = [
     name: "Columnaris Disease",
     description: "Bacterial infection more prevalent in cold water conditions.",
     severity: "Medium",
+    season: "Winter",
     symptoms: ["White spots on mouth", "Fin erosion", "Gill damage"],
     prevention: "Regular water changes, proper nutrition",
     product: "BioShield Bacterial Defense",
@@ -28,9 +30,19 @@ const winterDiseases = [
     name: "Ich (White Spot Disease)",
     description: "Parasitic infection causing white spots during temperature fluctuations.",
     severity: "High",
+    season: "Winter",
     symptoms: ["White spots on body", "Scratching against surfaces", "Rapid breathing"],
     prevention: "Stable water temperature, quarantine new fish",
     product: "IchClear Treatment",
+  },
+  {
+    name: "Trichodiniasis",
+    description: "Protozoan parasite that thrives in cool, organically rich water.",
+    severity: "Medium",
+    season: "Winter",
+    symptoms: ["Grey film on skin", "Flashing", "Frayed fins"],
+    prevention: "Reduce organic load, maintain aeration",
+    product: "ParaShield Solution",
   },
 ]
 
@@ -39,6 +51,7 @@ const summerDiseases = [
     name: "Bacterial Gill Disease",
     description: "Common in warm water with low oxygen levels.",
     severity: "High",
+    season: "Summer",
     symptoms: ["Swollen gills", "Gasping at surface", "Reduced feeding"],
     prevention: "Maintain aeration, avoid overfeeding",
     product: "GillCare Plus",
@@ -47,6 +60,7 @@ const summerDiseases = [
     name: "Epizootic Ulcerative Syndrome",
     description: "Serious fungal disease in warm monsoon conditions.",
     severity: "Critical",
+    season: "Summer",
     symptoms: ["Red ulcers on body", "Deep lesions", "Scale loss"],
     prevention: "Good pond hygiene, lime treatment",
     product: "UlcerHeal Advanced",
@@ -55,77 +69,150 @@ const summerDiseases = [
     name: "Argulosis (Fish Lice)",
     description: "Parasitic infestation common in summer months.",
     severity: "Medium",
+    season: "Summer",
     symptoms: ["Visible parasites", "Restlessness", "Bloody spots"],
     prevention: "Regular pond screening, avoid wild fish",
     product: "ParaKill Solution",
   },
+  {
+    name: "Aeromoniasis (Red Sore)",
+    description: "Bacterial outbreak triggered by heat stress and poor water.",
+    severity: "Critical",
+    season: "Summer",
+    symptoms: ["Red sores", "Swollen abdomen", "Bulging eyes"],
+    prevention: "Reduce stocking density, add probiotics",
+    product: "BioShield Bacterial Defense",
+  },
 ]
+
+// Fisher–Yates shuffle (returns a new array)
+function shuffle(array) {
+  const a = [...array]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+const severityRank = { Low: 1, Medium: 2, High: 3, Critical: 4 }
 
 export function SeasonalDiseases() {
   const [currentSeason, setCurrentSeason] = useState("winter")
+  const [cards, setCards] = useState([])
+  const [animKey, setAnimKey] = useState(0)
 
-  useEffect(() => {
-    const month = new Date().getMonth()
-    if (month >= 3 && month <= 9) {
-      setCurrentSeason("summer")
-    } else {
-      setCurrentSeason("winter")
+  const buildCards = useCallback((season) => {
+    if (season === "all") {
+      // Randomly pick from the full pool for a mixed, surprise selection
+      return shuffle([...winterDiseases, ...summerDiseases]).slice(0, 6)
     }
+    const source = season === "winter" ? winterDiseases : summerDiseases
+    return shuffle(source)
   }, [])
 
-  const diseases = currentSeason === "winter" ? winterDiseases : summerDiseases
+  const randomize = useCallback(
+    (season) => {
+      setCards(buildCards(season))
+      setAnimKey((k) => k + 1)
+    },
+    [buildCards],
+  )
+
+  useEffect(() => {
+    // Detect the current season on first load, then randomize the cards
+    const month = new Date().getMonth()
+    const detected = month >= 3 && month <= 9 ? "summer" : "winter"
+    setCurrentSeason(detected)
+    setCards(buildCards(detected))
+  }, [buildCards])
+
+  const selectSeason = (season) => {
+    setCurrentSeason(season)
+    randomize(season)
+  }
 
   return (
-    <section className="py-20 bg-muted">
+    <section className="py-20 bg-muted/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 mb-4">
             {currentSeason === "winter" ? (
               <Snowflake className="w-4 h-4 text-primary" />
-            ) : (
+            ) : currentSeason === "summer" ? (
               <Sun className="w-4 h-4 text-amber-500" />
+            ) : (
+              <Leaf className="w-4 h-4 text-primary" />
             )}
             <span className="text-sm font-medium text-primary">
-              {currentSeason === "winter" ? "Winter Season" : "Summer Season"} Alert
+              {currentSeason === "winter"
+                ? "Winter Season"
+                : currentSeason === "summer"
+                  ? "Summer Season"
+                  : "All Seasons"}{" "}
+              Alert
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">Seasonal Fish Diseases</h2>
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+            Seasonal Fish Diseases
+          </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Stay informed about common fish diseases during the current season and protect your farm with our
-            recommended solutions.
+            A fresh, randomized selection of common fish diseases with symptoms and recommended solutions. Hit
+            shuffle for a new set every time.
           </p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
           <Button
             variant={currentSeason === "winter" ? "default" : "outline"}
-            onClick={() => setCurrentSeason("winter")}
+            onClick={() => selectSeason("winter")}
             className="gap-2"
           >
             <Snowflake className="w-4 h-4" />
-            Winter Diseases
+            Winter
           </Button>
           <Button
             variant={currentSeason === "summer" ? "default" : "outline"}
-            onClick={() => setCurrentSeason("summer")}
+            onClick={() => selectSeason("summer")}
             className="gap-2"
           >
             <Sun className="w-4 h-4" />
-            Summer Diseases
+            Summer
+          </Button>
+          <Button
+            variant={currentSeason === "all" ? "default" : "outline"}
+            onClick={() => selectSeason("all")}
+            className="gap-2"
+          >
+            <Leaf className="w-4 h-4" />
+            All Seasons
+          </Button>
+          <Button variant="secondary" onClick={() => randomize(currentSeason)} className="gap-2">
+            <Shuffle className="w-4 h-4" />
+            Shuffle Cards
           </Button>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {diseases.map((disease, index) => (
-            <Card key={index} className="card-hover border-0 shadow-lg">
+          {cards.map((disease, index) => (
+            <Card
+              key={`${animKey}-${disease.name}`}
+              className="card-hover border border-border/60 shadow-lg animate-fade-up"
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
               <CardHeader>
-                <div className="flex items-start justify-between gap-4">
-                  <CardTitle className="text-lg">{disease.name}</CardTitle>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <Badge variant="outline" className="mb-2 text-xs">
+                      {disease.season}
+                    </Badge>
+                    <CardTitle className="font-heading text-lg leading-snug">{disease.name}</CardTitle>
+                  </div>
                   <Badge
                     variant={
-                      disease.severity === "Critical"
+                      severityRank[disease.severity] >= 4
                         ? "destructive"
-                        : disease.severity === "High"
+                        : severityRank[disease.severity] >= 3
                           ? "default"
                           : "secondary"
                     }
