@@ -1,0 +1,12 @@
+{
+  "name": "kanan-biotech",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter my-v0-project dev",
+    "build": "pnpm --filter my-v0-project build",
+    "start": "pnpm --filter my-v0-project start",
+    "lint": "pnpm --filter my-v0-project lint"
+  },
+  "packageManager": "pnpm@10.34.3"
+}
